@@ -1,0 +1,61 @@
+Description: Extend CMakeLists.txt to build and install static library
+Author: Andreas Bombe <aeb@debian.org>
+Forwarded: not-needed
+Last-Update: 2025-03-09
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -345,6 +345,30 @@
+     $<TARGET_OBJECTS:utility>
+     $<TARGET_OBJECTS:vector>)
+ 
++add_library(${LIBNAME}-static STATIC
++    src/libliquid.c
++    $<TARGET_OBJECTS:agc>
++    $<TARGET_OBJECTS:audio>
++    $<TARGET_OBJECTS:buffer>
++    $<TARGET_OBJECTS:channel>
++    $<TARGET_OBJECTS:dotprod>
++    $<TARGET_OBJECTS:equalization>
++    $<TARGET_OBJECTS:fec>
++    $<TARGET_OBJECTS:fft>
++    $<TARGET_OBJECTS:filter>
++    $<TARGET_OBJECTS:framing>
++    $<TARGET_OBJECTS:math>
++    $<TARGET_OBJECTS:matrix>
++    $<TARGET_OBJECTS:modem>
++    $<TARGET_OBJECTS:multichannel>
++    $<TARGET_OBJECTS:nco>
++    $<TARGET_OBJECTS:optim>
++    $<TARGET_OBJECTS:quantization>
++    $<TARGET_OBJECTS:random>
++    $<TARGET_OBJECTS:sequence>
++    $<TARGET_OBJECTS:utility>
++    $<TARGET_OBJECTS:vector>)
++
+ target_include_directories(${LIBNAME} PRIVATE ${INCLUDE})
+ #target_sources(${LIBNAME} PUBLIC FILE_SET HEADERS FILES include/liquid.h)
+ 
+@@ -378,11 +402,13 @@
+ target_link_libraries(${LIBNAME} c m)
+ 
+ set_target_properties(${LIBNAME} PROPERTIES VERSION ${LIQUID_VERSION} SOVERSION 1)
++set_target_properties(${LIBNAME}-static PROPERTIES OUTPUT_NAME ${LIBNAME})
+ 
+ # see: https://cmake.org/cmake/help/latest/command/install.html#examples
+ # TODO: uninstall?
+ install(TARGETS
+           ${LIBNAME}
++          ${LIBNAME}-static
+         RUNTIME           # Following options apply to runtime artifacts.
+           COMPONENT Runtime
+         LIBRARY           # Following options apply to library artifacts.
+@@ -390,7 +416,6 @@
+           NAMELINK_COMPONENT Development
+         ARCHIVE           # Following options apply to archive artifacts.
+           COMPONENT Development
+-          DESTINATION lib/static
+         #FILE_SET HEADERS  # Following options apply to file set HEADERS.
+           #COMPONENT Development
+         )

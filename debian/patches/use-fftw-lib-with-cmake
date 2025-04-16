@@ -1,0 +1,47 @@
+Description: Detect and link with libfftw3 in cmake build
+Author: Andreas Bombe <aeb@debian.org>
+Last-Update: 2025-03-15 <YYYY-MM-DD, last update of the meta-information, optional>
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -41,10 +41,11 @@
+ include (CheckFunctionExists)
+ include (CheckLibraryExists)
+ include (CheckSymbolExists)
++find_package(PkgConfig REQUIRED)
+ 
+ # check for hardware acceleration
+ include(cmake/FindSIMD.cmake)
+-# TODO: check for FFTW
++pkg_check_modules(FFTW3 IMPORTED_TARGET fftw3f REQUIRED)
+ 
+ # global flags
+ if (MSVC)
+@@ -55,6 +56,10 @@
+     add_compile_options(-Wall -fPIC -O3 -Wno-deprecated -Wno-deprecated-declarations)
+ endif()
+ 
++if (FFTW3_FOUND)
++    set(HAVE_FFTW3_H 1)
++endif()
++
+ include (CheckTypeSize)
+ check_type_size(int SIZEOF_INT LANGUAGE C)
+ 
+@@ -399,7 +404,7 @@
+     target_link_options(${LIBNAME} PRIVATE -coverage)
+ endif(COVERAGE)
+ 
+-target_link_libraries(${LIBNAME} c m)
++target_link_libraries(${LIBNAME} c m PkgConfig::FFTW3)
+ 
+ set_target_properties(${LIBNAME} PROPERTIES VERSION ${LIQUID_VERSION} SOVERSION 1)
+ set_target_properties(${LIBNAME}-static PROPERTIES OUTPUT_NAME ${LIBNAME})
+--- a/cmake/config.h.cmake
++++ b/cmake/config.h.cmake
+@@ -5,3 +5,4 @@
+ #cmakedefine HAVE_STDLIB_H
+ #cmakedefine HAVE_LIBC
+ #cmakedefine SIZEOF_INT @SIZEOF_INT@
++#cmakedefine HAVE_FFTW3_H 1

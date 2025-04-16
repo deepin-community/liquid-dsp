@@ -1,0 +1,52 @@
+Description: Detect and link with FEC library in cmake build
+Author: Andreas Bombe <aeb@debian.org>
+Forwarded: not-needed
+Last-Update: 2025-03-15 <YYYY-MM-DD, last update of the meta-information, optional>
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ # cmake build file for liquid-dsp
+-cmake_minimum_required(VERSION 3.10)
++cmake_minimum_required(VERSION 3.18)
+ 
+ # run custom command to parse version number from include/liquid.h
+ execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/scripts/version.sh
+@@ -46,6 +46,8 @@
+ # check for hardware acceleration
+ include(cmake/FindSIMD.cmake)
+ pkg_check_modules(FFTW3 IMPORTED_TARGET fftw3f REQUIRED)
++find_library(FEC_LIBRARY fec REQUIRED)
++check_include_file(fec.h HAVE_FEC_H)
+ 
+ # global flags
+ if (MSVC)
+@@ -60,6 +62,10 @@
+     set(HAVE_FFTW3_H 1)
+ endif()
+ 
++if (HAVE_FEC_H)
++    set(HAVE_LIBFEC 1)
++endif()
++
+ include (CheckTypeSize)
+ check_type_size(int SIZEOF_INT LANGUAGE C)
+ 
+@@ -404,7 +410,7 @@
+     target_link_options(${LIBNAME} PRIVATE -coverage)
+ endif(COVERAGE)
+ 
+-target_link_libraries(${LIBNAME} c m PkgConfig::FFTW3)
++target_link_libraries(${LIBNAME} c m PkgConfig::FFTW3 ${FEC_LIBRARY})
+ 
+ set_target_properties(${LIBNAME} PROPERTIES VERSION ${LIQUID_VERSION} SOVERSION 1)
+ set_target_properties(${LIBNAME}-static PROPERTIES OUTPUT_NAME ${LIBNAME})
+--- a/cmake/config.h.cmake
++++ b/cmake/config.h.cmake
+@@ -6,3 +6,5 @@
+ #cmakedefine HAVE_LIBC
+ #cmakedefine SIZEOF_INT @SIZEOF_INT@
+ #cmakedefine HAVE_FFTW3_H 1
++#cmakedefine HAVE_FEC_H
++#cmakedefine HAVE_LIBFEC

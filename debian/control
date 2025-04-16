@@ -1,15 +1,47 @@
-Source: template-repository
-Section: unknown
+Source: liquid-dsp
+Section: hamradio
 Priority: optional
-Maintainer: Tsic404 <liuheng@deepin.org>
-Build-Depends: debhelper (>= 11)
-Standards-Version: 4.1.3
-Homepage: https://github.com/deepin-community/template-repository
-#Vcs-Browser: https://salsa.debian.org/debian/deepin-community-template-repository
-#Vcs-Git: https://salsa.debian.org/debian/deepin-community-template-repository.git
+Maintainer: Debian Hamradio Maintainers <debian-hams@lists.debian.org>
+Uploaders: Andreas Bombe <aeb@debian.org>
+Build-Depends: debhelper-compat (= 13),
+               cmake (>= 3.18),
+               pkgconf,
+               libfftw3-dev,
+               libfec-dev
+Standards-Version: 4.7.1
+Homepage: https://liquidsdr.org/
+Vcs-Browser: https://salsa.debian.org/debian-hamradio-team/liquid-dsp
+Vcs-Git: https://salsa.debian.org/debian-hamradio-team/liquid-dsp.git
+Rules-Requires-Root: no
 
-Package: template-repository
+Package: libliquid1
+Section: libs
 Architecture: any
+Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Description: signal processing library for software defined radio
+ liquid-dsp is a free and open-source digital signal processing (DSP)
+ library designed specifically for software defined radios on embedded
+ platforms. The aim is to provide a lightweight DSP library that does not
+ rely on a myriad of external dependencies or proprietary and otherwise
+ cumbersome frameworks. All signal processing elements are designed to be
+ flexible, scalable, and dynamic, including filters, filter design,
+ oscillators, modems, synchronizers, and complex mathematical operations.
+ .
+ This package contains the shared library.
+
+Package: libliquid-dev
+Section: libdevel
+Architecture: any
+Multi-Arch: same
+Depends: libliquid1 (= ${binary:Version}), ${misc:Depends}
+Description: signal processing library for software defined radio (development files)
+ liquid-dsp is a free and open-source digital signal processing (DSP)
+ library designed specifically for software defined radios on embedded
+ platforms. The aim is to provide a lightweight DSP library that does not
+ rely on a myriad of external dependencies or proprietary and otherwise
+ cumbersome frameworks. All signal processing elements are designed to be
+ flexible, scalable, and dynamic, including filters, filter design,
+ oscillators, modems, synchronizers, and complex mathematical operations.
+ .
+ This package contains the files required to compile programs using liquid-dsp.

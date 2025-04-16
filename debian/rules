@@ -1,4 +1,13 @@
 #!/usr/bin/make -f
 
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+ifeq ($(DEB_HOST_ARCH_CPU),i386)
+  export DEB_CFLAGS_MAINT_APPEND = -ffloat-store
+endif
+
 %:
-	dh $@
+	dh ${@} --buildsystem=cmake
+
+override_dh_auto_configure:
+	dh_auto_configure -- -DENABLE_SIMD=OFF -DBUILD_EXAMPLES=OFF

@@ -1,5 +1,173 @@
-template-repository (1.0-1) unstable; urgency=medium
+liquid-dsp (1.7.0-1) unstable; urgency=medium
 
-  * Initial release
+  * New upstream version 1.7.0
+  * Drop fix-soname patch, applied upstream
+  * Drop fix-bessel-array-out-of-bounds patch, applied upstream
+  * Switch to new cmake build system
+  * Add build-static-library-with-cmake patch
+  * Add use-fftw-lib-with-cmake patch to detect and use libfftw3 in cmake
+    build
+  * Add use-fec-lib-with-cmake patch to detect and use libfec in cmake build
+  * Build-Depend on pkgconf instead of obsolete pkg-config
+  * Bump Standards-Version to 4.7.1, no changes needed
+  * HISTORY has been renamed to CHANGELOG.md and needs no special handling
+    anymore
+  * Update years in debian/copyright
 
- -- Tsic404 <liuheng@deepin.org>  Sat, 28 Jan 2023 13:46:49 +0800
+ -- Andreas Bombe <aeb@debian.org>  Sat, 15 Mar 2025 19:38:28 +0100
+
+liquid-dsp (1.6.0-3) unstable; urgency=medium
+
+  * Fix fix-chromosome-32bit patch with reliable initialization of max_value
+
+ -- Andreas Bombe <aeb@debian.org>  Wed, 18 Oct 2023 03:46:49 +0200
+
+liquid-dsp (1.6.0-2) unstable; urgency=medium
+
+  * Add fix-chromosome-32bit patch to fix bug and failing testcases on 32 bit
+    architectures
+
+ -- Andreas Bombe <aeb@debian.org>  Wed, 18 Oct 2023 02:27:35 +0200
+
+liquid-dsp (1.6.0-1) unstable; urgency=medium
+
+  * New upstream release 1.6.0
+  * Add Build-Depends on libfec (closes: #1053605)
+  * Remove library symbols file again as currently internal symbols end up
+    being exported
+  * Remove fix-arlib patch, fixed in upstream
+  * Update copyright years in d/copyright
+
+ -- Andreas Bombe <aeb@debian.org>  Tue, 17 Oct 2023 02:54:24 +0200
+
+liquid-dsp (1.5.0-3) unstable; urgency=medium
+
+  * Replace fix-soname patch with the version that was forwarded upstream and
+    mark it as forwarded
+  * Changing the local build target for the shared library back to
+    libliquid.so incidentally fixes the failure to build source after build
+    (closes: #1046182)
+  * Add fix-arlib-install patch to remove version number from static library
+    install path as it is not in fix-soname anymore
+  * Mark fix-bessel-array-out-of-bounds patch as forwarded
+
+ -- Andreas Bombe <aeb@debian.org>  Sun, 10 Sep 2023 23:49:39 +0530
+
+liquid-dsp (1.5.0-2) unstable; urgency=medium
+
+  * Upload to unstable
+  * Add patch fix-bessel-array-out-of-bounds to fix bessel_azpkf() writing one
+    index behind the end of an array that is passed in
+  * Use -ffloat-store on i386 to prevent some testcase failures (Thanks to
+    Adrian Bunk for the hint and patch)
+
+ -- Andreas Bombe <aeb@debian.org>  Wed, 11 Jan 2023 03:52:40 +0100
+
+liquid-dsp (1.5.0-1) experimental; urgency=medium
+
+  * New upstream release 1.5.0
+  * Change soname to libliquid1 due to many function signatures changing from
+    returning void to returning int error values and upstream now introducing
+    a versioned soname
+  * Drop define-soname patch
+  * Add fix-soname patch that corrects makefile.in not actually setting the
+    new soname
+  * Bump Standards-Version to 4.6.2, no changes required
+  * Drop typos.patch patch, fixed upstream
+  * Update debian/copyright
+
+ -- Andreas Bombe <aeb@debian.org>  Thu, 05 Jan 2023 02:52:52 +0100
+
+liquid-dsp (1.4.0-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Andreas Bombe <aeb@debian.org>  Sat, 12 Mar 2022 01:48:52 +0100
+
+liquid-dsp (1.4.0-1) experimental; urgency=medium
+
+  * New upstream release 1.4.0
+  * Bump soname to libliquid3d due to function signatures changing as now
+    error values are returned from previously void functions
+  * Add Build-Depends-Package header to d/libliquid3d.symbols
+  * Refresh patches
+  * Update copyright years in d/copyright
+  * Fix machine readable paths in d/copyright
+  * Update to debhelper compat level 13
+  * Bump Standards-Version to 4.6.0, no changes required
+
+ -- Andreas Bombe <aeb@debian.org>  Sun, 27 Feb 2022 04:00:47 +0100
+
+liquid-dsp (1.3.2-3) unstable; urgency=low
+
+  * Team upload.
+
+  [ Debian Janitor ]
+  * Use secure URI in Homepage field.
+  * Set upstream metadata fields: Bug-Database, Bug-Submit, Repository,
+    Repository-Browse.
+  * Update standards version to 4.5.0, no changes needed.
+
+  [ Christoph Berg ]
+  * Fit GitHub watch file.
+
+ -- Christoph Berg <myon@debian.org>  Wed, 05 Jan 2022 15:29:55 +0100
+
+liquid-dsp (1.3.2-2) unstable; urgency=medium
+
+  * Team upload.
+  * Upload to unstable.
+
+ -- Christoph Berg <myon@debian.org>  Fri, 27 Dec 2019 16:09:32 +0100
+
+liquid-dsp (1.3.2-1) experimental; urgency=medium
+
+  [ Tim Kuester ]
+  * Team upload.
+  * New upstream release 1.3.2
+  * Refresh define-soname patch
+  * Bump soname to libliquid2d due to removed symbols
+  * Include config/test artifacts in gitignore
+  * Improved patch formatting, thanks @paultag
+
+  [ tony mancill ]
+  * Add typos.patch
+  * Update to debhelper compat level 12
+  * Bump Standards-Version to 4.4.1
+  * Set "Rules-Requires-Root: no" in debian/control
+
+  [ Christoph Berg ]
+  * libliquid2d.symbols: Add Build-Depends-Package; reset version info to "0"
+    on all symbols after the soname bump.
+  * gitlab-ci.yml: Use salsa-ci pipeline.
+
+ -- Christoph Berg <myon@debian.org>  Wed, 25 Dec 2019 22:35:15 +0100
+
+liquid-dsp (1.3.1-1) unstable; urgency=medium
+
+  * New upstream release 1.3.1
+  * Update libliquid1d.symbols with new symbols
+  * Update debian/copyright for source changes
+  * Drop fix-makefile patch, integrated upstream
+  * Remove dh-autoreconf from Build-Depends, not needed with debhelper compat
+    level 10
+  * Bump Standards-Version to 4.1.1, no changes required
+
+ -- Andreas Bombe <aeb@debian.org>  Sun, 29 Oct 2017 02:33:51 +0200
+
+liquid-dsp (1.3.0-1) unstable; urgency=medium
+
+  * New upstream release 1.3.0
+  * Bump soname to libliquid1d due to renamed and removed symbols
+  * Add watch file
+  * Copy examples directory into libliquid-dev documentation
+  * Install HISTORY as upstream changelog
+  * Mark libliquid-dev as Multi-Arch: same
+
+ -- Andreas Bombe <aeb@debian.org>  Tue, 10 Jan 2017 03:00:30 +0100
+
+liquid-dsp (1.2.0+git20161107-1) unstable; urgency=medium
+
+  * Initial release (Closes: #832114)
+
+ -- Andreas Bombe <aeb@debian.org>  Sun, 11 Dec 2016 17:46:00 +0100
