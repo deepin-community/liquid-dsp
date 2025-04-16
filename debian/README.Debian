@@ -1,0 +1,10 @@
+Instruction Set Optimized Code
+==============================
+
+The liquid-dsp library contains provisions to compile special versions of its
+dot product functions optimized for certain instruction set extensions such as
+SSE2/SSE4 or NEON. These had to be disabled since the decision to use it happens
+at build time and not on the computer the code is actually run.
+
+Runtime detection will have to implemented before these can be enabled for the
+Debian packages.

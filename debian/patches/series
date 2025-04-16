@@ -1,0 +1,4 @@
+build-static-library-with-cmake
+use-fftw-lib-with-cmake
+use-fec-lib-with-cmake
+fix-chromosome-32bit

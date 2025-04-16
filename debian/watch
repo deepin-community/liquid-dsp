@@ -1,0 +1,2 @@
+version=4
+https://github.com/jgaeddert/liquid-dsp/tags .*/v([\d\.]+)\.tar\.(?:xz|gz|bz2)
